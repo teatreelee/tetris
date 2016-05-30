@@ -13,7 +13,51 @@ tetris.drawPlayField = function() {
 
 //variable to store current coordinates
 
-tetris.currentCoor = [{row: 1, col: 1}, {row:1, col:2}, {row:2, col: 1}, {row:2, col: 2}];
+tetris.origin = {row: 5, col: 5};
+tetris.currentShape = 'Z';
+
+tetris.currentCoor;
+
+tetris.shapeToCoor =  function(shape,origin) {
+	if (shape === 'L') {
+		return [{row:origin.row, col: origin.col},
+				{row: origin.row -1, col: origin.col},
+				{row:origin.row + 1, col: origin.col},
+				{row: origin.row + 1, col: origin.col + 1}]
+	} else if (shape === 'J') {
+		return [{row:origin.row, col: origin.col},
+				{row:origin.row, col: origin.col + 1},
+				{row:origin.row, col: origin.col -1},
+				{row:origin.row-1, col: origin.col -1}]
+	} else if (shape === 'I') {
+		return [{row:origin.row, col: origin.col},
+				{row:origin.row, col: origin.col+1},
+				{row:origin.row, col: origin.col - 2},
+				{row:origin.row, col: origin.col - 1},]
+	} else if (shape === 'O') {
+		return [{row:origin.row, col: origin.col},
+				{row:origin.row, col: origin.col + 1},
+				{row:origin.row-1, col: origin.col+1},
+				{row:origin.row-1, col: origin.col},]
+	} else if (shape === 'S'){
+		return [{row:origin.row, col: origin.col},
+				{row:origin.row, col: origin.col + 1},
+				{row:origin.row +1, col: origin.col},
+				{row:origin.row+1, col: origin.col -1},]
+	} else if (shape === 'T') {
+		return [{row:origin.row, col: origin.col},
+				{row:origin.row, col: origin.col +1},
+				{row:origin.row, col: origin.col -1},
+				{row:origin.row-1, col: origin.col}]
+	} else if (shape === 'Z') {
+		return [{row:origin.row, col: origin.col},
+				{row:origin.row, col: origin.col -1},
+				{row:origin.row +1, col: origin.col},
+				{row:origin.row + 1, col: origin.col +1}]
+	}
+
+}
+
 //Fill the cells
 tetris.fillCells = function(coordinates, fillColor){
 	for (var i = 0; i < coordinates.length; i++) {
@@ -54,6 +98,7 @@ tetris.move = function(direction) {
 // call drawPlayField
 $(document).ready(function(){
 	tetris.drawPlayField();
+	tetris.currentCoor = tetris.shapeToCoor(tetris.currentShape, tetris.origin);
 	tetris.fillCells(tetris.currentCoor, 'black');
 	$(document).keydown(function(e) {
 		console.log(e.keyCode);
