@@ -24,12 +24,12 @@ tetris.shapeToCoor =  function(shape,origin) {
 				{row: origin.row -1, col: origin.col},
 				{row:origin.row + 1, col: origin.col},
 				{row: origin.row + 1, col: origin.col + 1}]
-	} else if(shape === 'L90'){
- 		 return [{row:origin.row,col:origin.col},
-        		  {row:origin.row,col:origin.col+1},
-     		     {row:origin.row,col:origin.col-1},
-       			   {row:origin.row+1,col:origin.col-1}]
-     }else if (shape === 'J') {
+	} else if (shape === 'L90'){
+ 		return [{row:origin.row,col:origin.col},
+          {row:origin.row,col:origin.col+1},
+          {row:origin.row,col:origin.col-1},
+          {row:origin.row+1,col:origin.col-1}]
+      } else if (shape === 'J') {
 		return [{row:origin.row, col: origin.col},
 				{row:origin.row, col: origin.col + 1},
 				{row:origin.row, col: origin.col -1},
@@ -73,13 +73,13 @@ tetris.fillCells = function(coordinates, fillColor){
 	}
 }
 
+
 tetris.move = function(direction) {
 	var reverse = false;
-	this.fillCells(this.currentCoor, '');
+	this.fillCells(this.currentCoor, '')
 	for (var i = 0; i < this.currentCoor.length; i++) {
 		if (direction === 'right') {
 			this.currentCoor[i].col++;
-			//console.log('moved right');
 			if (this.currentCoor[i].col > 9) {
 				reverse = true;
 			}
@@ -90,14 +90,14 @@ tetris.move = function(direction) {
 			}
 		}
 	}
-	this.fillCells(this.currentCoor, 'black');
 
-	//move origin
-	if (direction === 'right') {
+		//move origin
+	if(direction === 'right'){
 		this.origin.col++;
-	} else if (direction === 'left') {
+	} else if (direction === 'left'){
 		this.origin.col--;
 	}
+	this.fillCells(this.currentCoor, 'black');
 
 	if (reverse && direction === 'left') {
 		this.move('right') ;
@@ -107,18 +107,23 @@ tetris.move = function(direction) {
 	}
 }
 
-// rotate piece
+// call rotate when up arrow is pressed
+
 tetris.rotate = function() {
-	//clear piece off playfield
-	this.fillCells(this.currentCoor, '');
+	var lastShape = this.currentShape;
+	this.fillCells(this.currentCoor, '')
 	if (this.currentShape === 'L') {
 		this.currentShape = 'L90';
 	} else if (this.currentShape === 'L90') {
 		this.currentShape = 'L';
 	}
-	//change coordinates based on shape
 	this.currentCoor = this.shapeToCoor(this.currentShape, this.origin);
-	// create piece on board again
+	for (var i = 0; i < this.currentCoor.length; i++) {
+		if (this.currentCoor[i].col > 9 || this.currentCoor[i].col < 0) {
+			this.currentShape = lastShape;
+		}
+	}
+	this.currentCoor = this.shapeToCoor(this.currentShape, this.origin);
 	this.fillCells(this.currentCoor, 'black');
 }
 // call drawPlayField
