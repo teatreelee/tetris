@@ -92,6 +92,13 @@ tetris.move = function(direction) {
 	}
 	this.fillCells(this.currentCoor, 'black');
 
+	//move origin
+	if (direction === 'right') {
+		this.origin.col++;
+	} else if (direction === 'left') {
+		this.origin.col--;
+	}
+
 	if (reverse && direction === 'left') {
 		this.move('right') ;
 	} else if (reverse && direction === 'right') {
