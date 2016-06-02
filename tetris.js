@@ -14,7 +14,7 @@ tetris.drawPlayField = function() {
 //variable to store current coordinates
 
 tetris.origin = {row: 5, col: 5};
-tetris.currentShape = 'Z';
+tetris.currentShape = 'L';
 
 tetris.currentCoor;
 
@@ -24,7 +24,12 @@ tetris.shapeToCoor =  function(shape,origin) {
 				{row: origin.row -1, col: origin.col},
 				{row:origin.row + 1, col: origin.col},
 				{row: origin.row + 1, col: origin.col + 1}]
-	} else if (shape === 'J') {
+	} else if(shape === 'L90'){
+ 		 return [{row:origin.row,col:origin.col},
+        		  {row:origin.row,col:origin.col+1},
+     		     {row:origin.row,col:origin.col-1},
+       			   {row:origin.row+1,col:origin.col-1}]
+     }else if (shape === 'J') {
 		return [{row:origin.row, col: origin.col},
 				{row:origin.row, col: origin.col + 1},
 				{row:origin.row, col: origin.col -1},
@@ -95,6 +100,20 @@ tetris.move = function(direction) {
 	}
 }
 
+// rotate piece
+tetris.rotate = function() {
+	//clear piece off playfield
+	this.fillCells(this.currentCoor, '');
+	if (this.currentShape === 'L') {
+		this.currentShape = 'L90';
+	} else if (this.currentShape === 'L90') {
+		this.currentShape = 'L';
+	}
+	//change coordinates based on shape
+	this.currentCoor = this.shapeToCoor(this.currentShape, this.origin);
+	// create piece on board again
+	this.fillCells(this.currentCoor, 'black');
+}
 // call drawPlayField
 $(document).ready(function(){
 	tetris.drawPlayField();
@@ -106,6 +125,8 @@ $(document).ready(function(){
 			tetris.move('right');
 		} else if (e.keyCode === 37) {
 			tetris.move('left');
+		} else if (e.keyCode === 38) {
+			tetris.rotate();
 		}
 	})
 })
