@@ -1,5 +1,6 @@
 //declare global object tetris
 var tetris = {};
+var floor = false;
 
 //draw grid
 tetris.drawPlayField = function() {
@@ -139,6 +140,7 @@ tetris.drop = function() {
 	for (var i = 0; i < this.currentCoor.length; i++) {
 		if (this.currentCoor[i].row + 1 > 21) {
 			this.origin.row--;
+			floor = true;
 			break;
 		}
 	}
@@ -163,4 +165,7 @@ $(document).ready(function(){
 			tetris.drop();
 		}
 	})
+	var gravity = setInterval(function() {
+		if (floor === false) {tetris.drop()
+		}}, 500);
 })
