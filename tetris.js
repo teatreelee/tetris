@@ -98,6 +98,12 @@ tetris.move = function(direction) {
 		this.origin.col--;
 	}
 	this.currentCoor = this.shapeToCoor(this.currentShape, this.origin);
+
+	for (var i = 0; i < this.currentCoor.length; i++) {
+		if (this.currentCoor[i].col > 9 || this.currentCoor[i].col < 0) {
+			reverse = true;
+		}
+	}
 	this.fillCells(this.currentCoor, 'black');
 
 	if (reverse && direction === 'left') {
@@ -130,8 +136,14 @@ tetris.rotate = function() {
 
 tetris.drop = function() {
 	this.fillCells(this.currentCoor, '');
+	for (var i = 0; i < this.currentCoor.length; i++) {
+		if (this.currentCoor[i].row + 1 > 21) {
+			this.origin.row--;
+			break;
+		}
+	}
 	this.origin.row++;
-	this.currentCoor = this.shapeToCoor(this.currentShape, this.origin);
+	this.currentCoor = this.shapeToCoor(this.currentShape, this.origin);	
 	this.fillCells(this.currentCoor, 'black');
 }
 // call drawPlayField
