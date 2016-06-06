@@ -127,6 +127,13 @@ tetris.rotate = function() {
 	this.currentCoor = this.shapeToCoor(this.currentShape, this.origin);
 	this.fillCells(this.currentCoor, 'black');
 }
+
+tetris.drop = function() {
+	this.fillCells(this.currentCoor, '');
+	this.origin.row++;
+	this.currentCoor = this.shapeToCoor(this.currentShape, this.origin);
+	this.fillCells(this.currentCoor, 'black');
+}
 // call drawPlayField
 $(document).ready(function(){
 	tetris.drawPlayField();
@@ -140,6 +147,8 @@ $(document).ready(function(){
 			tetris.move('left');
 		} else if (e.keyCode === 38) {
 			tetris.rotate();
+		} else if (e.keyCode === 40) {
+			tetris.drop();
 		}
 	})
 })
