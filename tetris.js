@@ -77,19 +77,19 @@ tetris.fillCells = function(coordinates, fillColor){
 tetris.move = function(direction) {
 	var reverse = false;
 	this.fillCells(this.currentCoor, '')
-	for (var i = 0; i < this.currentCoor.length; i++) {
-		if (direction === 'right') {
-			this.currentCoor[i].col++;
-			if (this.currentCoor[i].col > 9) {
-				reverse = true;
-			}
-		} else if (direction === 'left') {
-			this.currentCoor[i].col--;
-			if (this.currentCoor[i].col < 0) {
-				reverse = true;
-			}
-		}
-	}
+	// for (var i = 0; i < this.currentCoor.length; i++) {
+	// 	if (direction === 'right') {
+	// 		this.currentCoor[i].col++;
+	// 		if (this.currentCoor[i].col > 9) {
+	// 			reverse = true;
+	// 		}
+	// 	} else if (direction === 'left') {
+	// 		this.currentCoor[i].col--;
+	// 		if (this.currentCoor[i].col < 0) {
+	// 			reverse = true;
+	// 		}
+	// 	}
+	// }
 
 		//move origin
 	if(direction === 'right'){
@@ -97,6 +97,7 @@ tetris.move = function(direction) {
 	} else if (direction === 'left'){
 		this.origin.col--;
 	}
+	this.currentCoor = this.shapeToCoor(this.currentShape, this.origin);
 	this.fillCells(this.currentCoor, 'black');
 
 	if (reverse && direction === 'left') {
