@@ -141,12 +141,22 @@ tetris.drop = function() {
 		if (this.currentCoor[i].row + 1 > 21) {
 			this.origin.row--;
 			floor = true;
+			console.log(tetris.origin);
 			break;
 		}
 	}
 	this.origin.row++;
 	this.currentCoor = this.shapeToCoor(this.currentShape, this.origin);	
 	this.fillCells(this.currentCoor, 'black');
+	if (floor === true) {
+		this.spawn();}
+}
+
+tetris.spawn = function() {
+	floor = false;
+	this.currentShape = 'L';
+	this.origin = {row:2,col:5};
+	this.currentCoor = this.shapeToCoor(this.currentShape, this.origin);
 }
 // call drawPlayField
 $(document).ready(function(){
@@ -166,6 +176,5 @@ $(document).ready(function(){
 		}
 	})
 	var gravity = setInterval(function() {
-		if (floor === false) {tetris.drop()
-		}}, 500);
+		tetris.drop()}, 500);
 })
