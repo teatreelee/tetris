@@ -1,6 +1,5 @@
 //declare global object tetris
 var tetris = {};
-var floor = false;
 
 //draw grid
 tetris.drawPlayField = function() {
@@ -78,32 +77,25 @@ tetris.fillCells = function(coordinates, fillColor){
 tetris.move = function(direction) {
 	var reverse = false;
 	this.fillCells(this.currentCoor, '')
-	// for (var i = 0; i < this.currentCoor.length; i++) {
-	// 	if (direction === 'right') {
-	// 		this.currentCoor[i].col++;
-	// 		if (this.currentCoor[i].col > 9) {
-	// 			reverse = true;
-	// 		}
-	// 	} else if (direction === 'left') {
-	// 		this.currentCoor[i].col--;
-	// 		if (this.currentCoor[i].col < 0) {
-	// 			reverse = true;
-	// 		}
-	// 	}
-	// }
+	for (var i = 0; i < this.currentCoor.length; i++) {
+		if (direction === 'right') {
+			this.currentCoor[i].col++;
+			if (this.currentCoor[i].col > 9) {
+				reverse = true;
+			}
+		} else if (direction === 'left') {
+			this.currentCoor[i].col--;
+			if (this.currentCoor[i].col < 0) {
+				reverse = true;
+			}
+		}
+	}
 
 		//move origin
 	if(direction === 'right'){
 		this.origin.col++;
 	} else if (direction === 'left'){
 		this.origin.col--;
-	}
-	this.currentCoor = this.shapeToCoor(this.currentShape, this.origin);
-
-	for (var i = 0; i < this.currentCoor.length; i++) {
-		if (this.currentCoor[i].col > 9 || this.currentCoor[i].col < 0) {
-			reverse = true;
-		}
 	}
 	this.fillCells(this.currentCoor, 'black');
 
@@ -136,27 +128,20 @@ tetris.rotate = function() {
 }
 
 tetris.drop = function() {
+	var reverse = false;
 	this.fillCells(this.currentCoor, '');
-	for (var i = 0; i < this.currentCoor.length; i++) {
-		if (this.currentCoor[i].row + 1 > 21) {
-			this.origin.row--;
-			floor = true;
-			console.log(tetris.origin);
-			break;
+	this.origin.row++;
+	this.currentCoor = this.shapeToCoor(this.currentShape, this.origin);
+	for (var i = 0; i < this.currentCoor.length; i++){
+		if(this.currentCoor[i].row > 21) {
+			reverse = true;
 		}
 	}
-	this.origin.row++;
-	this.currentCoor = this.shapeToCoor(this.currentShape, this.origin);	
-	this.fillCells(this.currentCoor, 'black');
-	if (floor === true) {
-		this.spawn();}
-}
-
-tetris.spawn = function() {
-	floor = false;
-	this.currentShape = 'L';
-	this.origin = {row:2,col:5};
-	this.currentCoor = this.shapeToCoor(this.currentShape, this.origin);
+	if (reverse) {
+		this.origin.row--;
+		this.currentCoor = this.shapeToCoor(this.currentShape, this.origin);
+	}
+	this.fillCells(this.currentCoor,'black');
 }
 // call drawPlayField
 $(document).ready(function(){
@@ -175,6 +160,4 @@ $(document).ready(function(){
 			tetris.drop();
 		}
 	})
-	var gravity = setInterval(function() {
-		tetris.drop()}, 500);
 })
