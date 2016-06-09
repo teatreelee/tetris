@@ -160,4 +160,7 @@ $(document).ready(function(){
 			tetris.drop();
 		}
 	})
+	var gravity = setInterval(function(){
+		tetris.drop();
+		}, 500);	
 })
