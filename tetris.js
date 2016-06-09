@@ -74,6 +74,7 @@ tetris.fillCells = function(coordinates, fillColor){
 }
 
 
+
 tetris.move = function(direction) {
 	var reverse = false;
 	this.fillCells(this.currentCoor, '')
@@ -142,7 +143,18 @@ tetris.drop = function() {
 		this.currentCoor = this.shapeToCoor(this.currentShape, this.origin);
 	}
 	this.fillCells(this.currentCoor,'black');
+	if (reverse){
+		this.spawn();
+	}
 }
+
+tetris.spawn = function() {
+	floor = false;
+	this.currentShape = 'L';
+	this.origin = {row:2,col:5};
+	this.currentCoor = this.shapeToCoor(this.currentShape, this.origin);
+}
+
 // call drawPlayField
 $(document).ready(function(){
 	tetris.drawPlayField();
